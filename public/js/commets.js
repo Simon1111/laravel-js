@@ -1,25 +1,22 @@
 /**
- * * Для работы скрипта необходимо добавить код нужную секцию 
- *   
+ * * Для работы скрипта необходимо добавить код нужную секцию
+ *
  *   <div id="${randomID}"></div>
  *	 <script src="< path_to >/commets.js"></script>
  * */
 (function () {
-    "use strict"
-
-    // form => возможно расписать по массиву
-    let randomID = (function randomInteger(min = 6, max = 12) {
-        let rand = min + Math.random() * (max - min)
-        rand = Math.round(rand)
-        var cba = "abcdefghijklmnopqrstuvwxyz1234567890";
-        var str = "";
+    const randomID = (function randomInteger(min = 6, max = 12) {
+        let rand = min + Math.random() * (max - min);
+        rand = Math.round(rand);
+        const cba = "abcdefghijklmnopqrstuvwxyz1234567890";
+        let str = "";
         while (str.length < rand) {
             str += cba[Math.floor(Math.random() * cba.length)];
         }
         return 'push_' + str
-    })() // создаю рандомный id
+    })(); // создаю рандомный id
 
-    let style = `
+    const style = `
      #push-comments #${randomID} {
         background-color: #f0f0f0;
         box-sizing: border-box;
@@ -90,30 +87,30 @@
     #push-comments #${randomID}__label::after {
         content: '';
         display: none;
-    }`
+    }`;
 
-    var sendMessage = (e, id_form = randomID) => {
-        e.preventDefault()
+    const sendMessage = (e, id_form = randomID) => {
+        e.preventDefault();
 
-        let request = new XMLHttpRequest();
-        let url = window.location.hostname // получаю url
-        let message = document.querySelector(`#${id_form}__message`).value
-        let body = `text=${encodeURIComponent(message)}&url=${encodeURIComponent(url)}`
+        const request = new XMLHttpRequest();
+        const url = window.location.hostname; // получаю url
+        const message = document.querySelector(`#${id_form}__message`).value;
+        const body = `text=${encodeURIComponent(message)}&url=${encodeURIComponent(url)}`;
 
         request.open("POST", "/add-comment", true); // куда отправляю
 
         // debugger
         request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        request.send(body); // то что отправляю 
+        request.send(body); // то что отправляю
 
         // if (!request.responseText) return;
 
-        alert(`Ваш комментарий отправлен на модерацию`)
+        alert(`Ваш комментарий отправлен на модерацию`);
 
-        document.querySelector(`#push-comments #${id_form}`).classList.add('hide')
+        document.querySelector(`#push-comments #${id_form}`).classList.add('hide');
 
         function removeFunc() {
-            document.querySelector(`#${id_form}`).remove()
+            document.querySelector(`#${id_form}`).remove();
         }
 
         setTimeout(removeFunc, 1000);
@@ -126,8 +123,8 @@
             <textarea name="message" cols="30" rows="10" id="${randomID}__message" placeholder="Ваш комментарий"></textarea>
             <input type="submit" value="Отправить" id="${randomID}__submit">
         </form>
-    </div>`
+    </div>`;
 
-    document.getElementById('push-comments').innerHTML = form
-    document.getElementById(`${randomID}__submit`).addEventListener("click", sendMessage, false)
+    document.getElementById('push-comments').innerHTML = form;
+    document.getElementById(`${randomID}__submit`).addEventListener("click", sendMessage, false);
 })();
